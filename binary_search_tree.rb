@@ -110,6 +110,34 @@ class Tree
     end
 
 
+    def level_order(node = @root, &block)
+
+        queue = []
+        breath_first = []
+
+        queue << node
+
+        while !queue.empty?
+
+            breath_first << queue[0]
+            queue << queue[0].left_child if queue[0].left_child
+            queue << queue[0].right_child if queue[0].right_child
+
+            queue.shift
+        end
+
+        if block_given?
+
+            for i in breath_first do
+                yield i
+            end
+
+        else 
+            breath_first.map { |node| node.data if node}
+        end 
+    end
+
+
     def min_value(node = @root)
 
         current = node
@@ -205,6 +233,7 @@ bst.pretty_print
 p bst.find(6)
 
 
-bst.delete(8) # root case problem!!
+bst.delete(8) 
 bst.pretty_print
 
+bst.level_order { |node| puts "#{node.data} " if node}
