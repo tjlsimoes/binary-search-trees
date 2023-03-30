@@ -84,29 +84,52 @@ class Tree
         end
     end
 
-    def inorder(node = @root, array=[], &block)
+    # def inorder(node = @root, array=[], &block)
+
+    #     if block_given?
+    #         inorder(node.left_child, array) if node.left_child
+    #         inorder(node.right_child, array) if node.right_child
+
+    #         array << node
+
+    #         for i in array do
+    #             yield(i)
+    #         end
+    #     else
+    #         inorder(node.left_child, array) if node.left_child
+    #         inorder(node.right_child, array) if node.right_child
+
+    #         array << node.data
+
+
+
+    #         array
+    #     end
+    # end
+
+    def inorder(node = @root, root_method = true, array = [], &block)
+        
+        # <left><root><right>
+
+        inorder(node.left_child, false, array) if node.left_child
+        array << node
+        inorder(node.right_child, false, array) if node.right_child
+
 
         if block_given?
-            inorder(node.left_child, array) if node.left_child
-            inorder(node.right_child, array) if node.right_child
-
-            array << node
-
-            for i in array
+            for i in array do
                 yield(i)
             end
-        else
-            inorder(node.left_child, array) if node.left_child
-            inorder(node.right_child, array) if node.right_child
 
-            array << node.data
-
-            for i in array
-                puts "#{i}"
-            end
+        elsif root_method == false 
 
             array
+
+        elsif root_method == true
+
+            array.map { |node| node.data if node }
         end
+    
     end
 
 
@@ -236,4 +259,6 @@ p bst.find(6)
 bst.delete(8) 
 bst.pretty_print
 
-bst.level_order { |node| puts "#{node.data} " if node}
+p bst.level_order 
+
+p bst.inorder
