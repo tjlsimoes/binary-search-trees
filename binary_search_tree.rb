@@ -51,18 +51,132 @@ class Tree
         end
     end
 
-    def delete(value)
-        
-        # you’ll have to deal with several cases for delete such as when a node has children or not
+    def no_children?(node)
 
-        # if !find(value), non existent node with that value
-
-        # if it doesn't have children, just set previous node's corresponding child to nil
-
-        # if it only has one child, replace node with child
-
-        # if two children, replace node with inorder values and reinsert them?
+        if node.right_child == nil && node.left_child == nil
+            true
+        else
+            false
+        end
     end
+
+    def has_only_left_child?(node)
+        if (node.right_child == nil && node.left_child != nil)
+            true
+        else
+            false
+        end
+    end
+
+    def has_only_right_child?(node)
+        if (node.left_child == nil && node.right_child != nil)
+            true
+        else
+            false
+        end
+    end
+
+    def has_both_children?(node)
+        if node.left_child != nil && node.right_child != nil
+            true
+        else
+            false
+        end
+    end
+
+    def inorder(node = @root, array=[], &block)
+
+        if block_given?
+            inorder(node.left_child, array) if node.left_child
+            inorder(node.right_child, array) if node.right_child
+
+            array << node
+
+            for i in array
+                yield(i)
+            end
+        else
+            inorder(node.left_child, array) if node.left_child
+            inorder(node.right_child, array) if node.right_child
+
+            array << node.data
+
+            for i in array
+                puts "#{i}"
+            end
+
+            array
+        end
+    end
+
+
+    def min_value(node = @root)
+
+        current = node
+        
+        while current.left_child != nil
+            current = current.left_child
+        end
+
+        return current
+    end
+
+    def delete(value, node = @root, other_node = nil)
+        
+        # value == root 
+
+        if value == node.data && has_both_children?(node) && other_node == nil
+            
+            replacement_value = self.min_value(node.right_child).data
+            node.data = replacement_value
+            delete(replacement_value, node.right_child, node)
+            
+        # no children
+
+        elsif value == node.data && other_node.left_child == node && no_children?(node)
+            other_node.left_child = nil
+        elsif value == node.data && other_node.right_child == node && no_children?(node)
+            other_node.right_child = nil
+
+        # other_node.left_child and only 1 child
+
+        elsif value == node.data && other_node.left_child == node && has_only_left_child?(node)
+            other_node.left_child = node.left_child
+        elsif value == node.data && other_node.left_child == node && has_only_right_child?(node)
+            other_node.left_child = node.right_child
+
+        # other_node.right_child and only 1 child
+
+        elsif value == node.data && other_node.right_child == node && has_only_left_child?(node)
+            other_node.right_child = node.left_child
+        elsif value == node.data && other_node.right_child == node && has_only_right_child?(node)
+            other_node.right_child = node.right_child
+
+        # other_node.left_child == node and 2 children
+
+        elsif value == node.data && other_node.left_child == node && has_both_children?(node)
+            
+            replacement_value = self.min_value(node.right_child).data
+            other_node.left_child.data = replacement_value
+            delete(replacement_value, other_node.left_child.right_child, other_node.left_child)
+
+        # other_node.right_child == node and 2 children
+            
+        elsif value == node.data && other_node.right_child == node && has_both_children?(node)
+            
+            replacement_value = self.min_value(node.right_child).data
+            other_node.right_child.data = replacement_value
+            delete(replacement_value, other_node.right_child.right_child, other_node.right_child)
+
+
+        elsif value < node.data
+            delete(value, node.left_child, node) if node.left_child
+        elsif value > node.data
+            delete(value, node.right_child, node) if node.right_child
+        end
+
+    end
+
 
     def find(value, node = @root)
 
@@ -89,3 +203,8 @@ p bst.insert(0)
 
 bst.pretty_print
 p bst.find(6)
+
+
+bst.delete(8) # root case problem!!
+bst.pretty_print
+
