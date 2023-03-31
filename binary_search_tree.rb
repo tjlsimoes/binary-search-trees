@@ -266,29 +266,81 @@ class Tree
        end
         
     end
+
+
+    def height(node = @root, counter = 0)
+
+        if no_children?(node)
+
+            # puts "No children node #{node.data}, counter: #{counter}."
+            return counter
+        else
+            
+            if has_both_children?(node)
+
+                left_counter = height(node.left_child, counter += 1)
+                counter -= 1
+                right_counter = height(node.right_child, counter += 1) 
+
+            elsif has_only_left_child?(node)
+
+                left_counter = height(node.left_child, counter += 1)
+                right_counter = 0
+
+            elsif has_only_right_child?(node)
+
+                left_counter = 0
+                right_counter = height(node.right_child, counter += 1) 
+            end
+            
+
+            if left_counter > right_counter
+                # puts "node:#{node.data}  counter:#{left_counter}"
+                left_counter
+            elsif right_counter > left_counter
+                # puts "node:#{node.data}  counter:#{right_counter}"
+                right_counter
+            else
+                # puts "node:#{node.data}  counter:#{left_counter}"
+                left_counter
+            end
+
+        end
+
+    end
+
+
 end
 
 bst = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 
-p bst
+# p bst
 
-bst.pretty_print
+# bst.pretty_print
 
-p bst.insert(6)
-p bst.insert(24)
-p bst.insert(0)
+# p bst.insert(6)
+# p bst.insert(24)
+# p bst.insert(0)
 
-bst.pretty_print
-p bst.find(6)
+# bst.pretty_print
+# p bst.find(6)
 
 
-bst.delete(8) 
-bst.pretty_print
+# bst.delete(8) 
+# bst.pretty_print
 
-p bst.level_order 
+# p bst.level_order 
 
-p bst.inorder
+# p bst.inorder
 
-p bst.preorder
+# p bst.preorder
 
-p bst.postorder
+# p bst.postorder
+
+# bst.insert(6346)
+# bst.insert(6347)
+# bst.insert(6348)
+# bst.pretty_print
+
+
+bst.height
