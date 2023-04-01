@@ -309,6 +309,44 @@ class Tree
 
     end
 
+    def balanced?(node = @root, counter = 0)
+
+        if no_children?(node)
+            return counter
+        else
+            
+            if has_both_children?(node)
+
+                left_counter = height(node.left_child, counter += 1)
+                counter -= 1
+                right_counter = height(node.right_child, counter += 1) 
+
+            elsif has_only_left_child?(node)
+
+                left_counter = height(node.left_child, counter += 1)
+                right_counter = 0
+
+            elsif has_only_right_child?(node)
+
+                left_counter = 0
+                right_counter = height(node.right_child, counter += 1) 
+            end
+            
+
+            if (left_counter - right_counter) > 1 || (left_counter - right_counter) < -1
+                false
+            else
+                true
+            end
+
+        end
+    end
+
+    def depth(node = @root)
+        
+        height(@root) - height(node)
+    end
+
 
 end
 
@@ -337,10 +375,14 @@ bst = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 
 # p bst.postorder
 
-# bst.insert(6346)
-# bst.insert(6347)
-# bst.insert(6348)
-# bst.pretty_print
+bst.insert(6346)
+bst.insert(6347)
+bst.insert(6348)
+bst.pretty_print
 
 
-bst.height
+# p bst.height
+
+# p bst.depth(bst.find(8))
+
+# p bst.balanced?
