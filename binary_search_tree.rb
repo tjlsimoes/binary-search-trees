@@ -359,41 +359,43 @@ class Tree
 
 end
 
-bst = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-
-# p bst
-
-# bst.pretty_print
-
-# p bst.insert(6)
-# p bst.insert(24)
-# p bst.insert(0)
-
-# bst.pretty_print
-# p bst.find(6)
 
 
-# bst.delete(8) 
-# bst.pretty_print
 
-# p bst.level_order 
+bst = Tree.new((Array.new(15) { rand(1..100) }))
 
-# p bst.inorder
-
-# p bst.preorder
-
-# p bst.postorder
-
-bst.insert(6346)
-bst.insert(6347)
-bst.insert(6348)
 bst.pretty_print
 
+p bst.balanced?
 
-# p bst.height
+p bst.level_order
 
-# p bst.depth(bst.find(8))
+p bst.preorder
 
-# p bst.balanced?
+p bst.postorder
 
-# bst.rebalance.pretty_print
+p bst.inorder
+
+bst.insert(123)
+
+bst.insert(124)
+
+bst.insert(125)
+
+bst.pretty_print
+
+p bst.balanced?
+
+bst2 = bst.rebalance
+
+bst2.pretty_print
+
+p bst2.balanced?
+
+p bst2.level_order
+
+p bst2.preorder
+
+p bst2.postorder
+
+p bst2.inorder
