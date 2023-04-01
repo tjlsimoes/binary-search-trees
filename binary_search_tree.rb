@@ -347,6 +347,15 @@ class Tree
         height(@root) - height(node)
     end
 
+    def rebalance
+        
+        if self.balanced?
+            "The tree is already balanced."
+
+        else
+            Tree.new(self.inorder)
+        end
+    end
 
 end
 
@@ -386,3 +395,5 @@ bst.pretty_print
 # p bst.depth(bst.find(8))
 
 # p bst.balanced?
+
+# bst.rebalance.pretty_print
