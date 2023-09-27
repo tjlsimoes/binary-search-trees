@@ -1,3 +1,3 @@
-# binary-search-trees
+# Binary Search Trees
 
-This contains a ruby implementation of binary search tree data structure.
+This repository contains a ruby implementation of binary search tree data structure.
